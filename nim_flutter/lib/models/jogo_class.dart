@@ -2,18 +2,17 @@
 class JogoClass {
   final int maxJogada;
   int quantidadeNoJogo;
-  final int jogada;
 
   JogoClass({
     required this.maxJogada,
     required this.quantidadeNoJogo,
-    required this.jogada,
+    
   });
-  int? fazerJogada(){
+  int? fazerJogada(int jogada){
     if(verificarJogada(jogada))return quantidadeNoJogo-=jogada;
     return null;
   }
-  bool verificarJogada(jogada){
+  bool verificarJogada(int jogada){
     return jogada <= maxJogada && jogada <= quantidadeNoJogo;
   }
 }
@@ -24,7 +23,6 @@ class JogoMultPlayer extends JogoClass{
   JogoMultPlayer({
     required super.maxJogada, 
     required super.quantidadeNoJogo, 
-    required super.jogada, 
     required this.namePlayer1, 
     required this.namePlayer2});
 

@@ -13,6 +13,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with Validator{
+  final TextEditingController _qntMaxRController = TextEditingController();
+  final TextEditingController _qntMaxPController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
   String? dropdownValue = "none";
   
@@ -49,7 +52,9 @@ class _HomePageState extends State<HomePage> with Validator{
               children : [
                 SizedBox(
                   child: Image.network(
-                    'https://th.bing.com/th/id/R.01ff082ff740417fd49b0516797922f2?rik=vns3F4pvTXMR8g&riu=http%3a%2f%2fimage.aladin.co.kr%2fCommunity%2fpaper%2f2013%2f0226%2fpimg_718842193830056.jpg&ehk=bbUhM2K6kJ48RlSU%2f%2bjFlUNZr4Mi4A42EhDvNoncE%2bs%3d&risl=&pid=ImgRaw&r=0'),),
+                    'https://th.bing.com/th/id/R.01ff082ff740417fd49b0516797922f2?rik=vns3F4pvTXMR8g&riu=http%3a%2f%2fimage.aladin.co.kr%2fCommunity%2fpaper%2f2013%2f0226%2fpimg_718842193830056.jpg&ehk=bbUhM2K6kJ48RlSU%2f%2bjFlUNZr4Mi4A42EhDvNoncE%2bs%3d&risl=&pid=ImgRaw&r=0'
+                  ),
+                ),
                 const SizedBox(height: 15.0,),
                 const Center(
                   child: Text(
@@ -84,8 +89,10 @@ class _HomePageState extends State<HomePage> with Validator{
                   items: _mods,
                 ),
                 const SizedBox(height: 15.0,),
+
                 //escolher quantidade de palitos maxima por jogada 3 a 5
                 TextFormField(
+                  controller: _qntMaxRController,
                   decoration: customTextField("Quantidade maxima de palitos pra retirar(min 3, max 5)"),
                   validator: (value) => combineValidator([
                     () => isNotEmpty(value),
@@ -95,8 +102,10 @@ class _HomePageState extends State<HomePage> with Validator{
                     
                 ),
                 const SizedBox(height: 15.0,),
+
                 //escolher a quantidade máxima de palitos no jogo 5 a 33
                 TextFormField(
+                  controller: _qntMaxPController,
                   decoration: customTextField("Quantidade de palitos no Jogo(min 5, max 33)"),
                   validator: (value) => combineValidator([
                     () => isNotEmpty(value),
@@ -110,7 +119,16 @@ class _HomePageState extends State<HomePage> with Validator{
                   onPressed: () {
                     if(_formKey.currentState!.validate()){
                       if(dropdownValue == 'VS'){
-                        
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: 
+                            (context) => DoisJogadoresPage(
+                              qntdMaxRetirar: int.parse(_qntMaxRController.text), 
+                              qntdPalitoJogo: int.parse(_qntMaxPController.text)
+                            )
+                          )
+                        );
                         
                       } else if(dropdownValue == 'computador'){
 
