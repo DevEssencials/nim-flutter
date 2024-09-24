@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nim_flutter/models/jogo_class.dart';
 import 'package:nim_flutter/pages/dois_jogadores_page.dart';
+import 'package:nim_flutter/widgets/aler_dialog.dart';
 import 'package:nim_flutter/widgets/customer/dropdown_custom.dart';
 import 'package:nim_flutter/widgets/customer/text_field_customer.dart';
 import 'package:nim_flutter/widgets/utils/validator_mixin.dart';
@@ -13,6 +13,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with Validator{
+  final TextEditingController _p1 = TextEditingController();
+  final TextEditingController _p2 = TextEditingController();
   final TextEditingController _qntMaxRController = TextEditingController();
   final TextEditingController _qntMaxPController = TextEditingController();
 
@@ -33,6 +35,12 @@ class _HomePageState extends State<HomePage> with Validator{
       child: Text("Modo computador"),
     ),
   ];
+
+  void inserirNomesJogadore(){
+    setState(() {
+      showDialog(context: context, builder: (BuildContext context) => DialogBox(controller: _p1,controller2: _p2,));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +91,6 @@ class _HomePageState extends State<HomePage> with Validator{
                   onChanged: (String? newValue) {
                     setState(() {
                       dropdownValue = newValue!;
-                      
                     });
                   },
                   items: _mods,
@@ -119,7 +126,7 @@ class _HomePageState extends State<HomePage> with Validator{
                   onPressed: () {
                     if(_formKey.currentState!.validate()){
                       if(dropdownValue == 'VS'){
-                        Navigator.push(
+                        /* Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: 
@@ -128,7 +135,8 @@ class _HomePageState extends State<HomePage> with Validator{
                               qntdPalitoJogo: int.parse(_qntMaxPController.text)
                             )
                           )
-                        );
+                        ); */
+                        inserirNomesJogadore();
                         
                       } else if(dropdownValue == 'computador'){
 
