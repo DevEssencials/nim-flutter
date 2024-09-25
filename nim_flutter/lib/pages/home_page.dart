@@ -32,6 +32,12 @@ class _HomePageState extends State<HomePage> with Validator{
       child: Text("Modo computador"),
     ),
   ];
+  @override
+  void dispose() {
+    _qntMaxPController.dispose();
+    _qntMaxRController.dispose();
+    super.dispose();
+  }
 
   void inserirNomesJogadores() {
     showDialog(
@@ -40,7 +46,7 @@ class _HomePageState extends State<HomePage> with Validator{
         final _formKeyNomes = GlobalKey<FormState>();
         final _p1Controller = TextEditingController();
         final _p2Controller = TextEditingController();
-
+        
         return AlertDialog(
           backgroundColor: Colors.pink[100],
           content: SizedBox(
@@ -103,6 +109,7 @@ class _HomePageState extends State<HomePage> with Validator{
       },
     );
   }
+  
 
 
   @override
@@ -160,47 +167,43 @@ class _HomePageState extends State<HomePage> with Validator{
                 ),
                 const SizedBox(height: 15.0,),
 
-                //escolher quantidade de palitos maxima por jogada 3 a 5
-                TextFormField(
-                  controller: _qntMaxRController,
-                  decoration: customTextField("Quantidade maxima de palitos pra retirar(min 3, max 5)"),
-                  validator: (value) => combineValidator([
-                    () => isNotEmpty(value),
-                    () => verificaInteiro(value!),
-                    () => maiorLimiteJogada(int.parse(value!)),
-                  ]),
-                    
+                //escolher quantidade de palitos maxima por jogada 1 a 3
+                Visibility(
+                  visible: (dropdownValue == 'VS')?true:false,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        controller: _qntMaxRController,
+                        decoration: customTextField("Quantidade maxima de palitos pra retirar(min 1, max 3)"),
+                        validator: (value) => combineValidator([
+                          () => isNotEmpty(value),
+                          () => verificaInteiro(value!),
+                          () => maiorLimiteJogada(int.parse(value!)),
+                        ]),
+                          
+                      ),
+                      const SizedBox(height: 15.0,),
+                      
+                      //escolher a quantidade máxima de palitos no jogo 5 a 33
+                      TextFormField(
+                        controller: _qntMaxPController,
+                        decoration: customTextField("Quantidade de palitos no Jogo(min 7, max 13)"),
+                        validator: (value) => combineValidator([
+                          () => isNotEmpty(value),
+                          () => verificaInteiro(value!),
+                          () => maiorQueOsLimitesPalitosNoJogo(int.parse(value!)),
+                        ]),
+                      ),
+                      const SizedBox(height: 15.0,),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 15.0,),
-
-                //escolher a quantidade máxima de palitos no jogo 5 a 33
-                TextFormField(
-                  controller: _qntMaxPController,
-                  decoration: customTextField("Quantidade de palitos no Jogo(min 5, max 33)"),
-                  validator: (value) => combineValidator([
-                    () => isNotEmpty(value),
-                    () => verificaInteiro(value!),
-                    () => maiorQueOsLimitesPalitosNoJogo(int.parse(value!)),
-                  ]),
-                ),
-                const SizedBox(height: 15.0,),
                 //iniciar Jogo
                 ElevatedButton(
                   onPressed: () {
                     if(_formKey.currentState!.validate()){
                       if(dropdownValue == 'VS'){
-                        /* Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: 
-                            (context) => DoisJogadoresPage(
-                              qntdMaxRetirar: int.parse(_qntMaxRController.text), 
-                              qntdPalitoJogo: int.parse(_qntMaxPController.text)
-                            )
-                          )
-                        ); */
                         inserirNomesJogadores();
-                        
                       } else if(dropdownValue == 'computador'){
 
                       }

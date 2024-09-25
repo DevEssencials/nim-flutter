@@ -8,8 +8,9 @@ class NimGame extends StatelessWidget {
   final int qntJogo;
   final String currentPlayer;
   final int qntRetirar;
+  final jogar;
   
-  const NimGame({super.key, required this.qntJogo, required this.currentPlayer, required this.qntRetirar});
+  const NimGame({super.key,required this.jogar, required this.qntJogo, required this.currentPlayer, required this.qntRetirar});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class NimGame extends StatelessWidget {
                     "Jogador atual: ",
                     style: styleText(),
                   ),
-      
+
                   Text(
                     currentPlayer,
                     style: styleText(),
@@ -38,36 +39,6 @@ class NimGame extends StatelessWidget {
                 ],
               ),
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "Insira a quantidade pra retirar: ",
-                    style: TextStyle(fontSize: 13),
-                  ),
-      
-                  SizedBox(
-                    height: 50,
-                    width: 200,
-                    child: Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextFormField(
-                            //controller: controller,
-                            //decoration: decoration(hint),
-                            keyboardType: TextInputType.none, // Desabilita teclado virtual
-                            //focusNode: foco,  // Gerencia o foco manualmente
-                            //onTap: onTap,
-                            validator: (value) {
-                              if(value == null || value.isEmpty)return "Valor não pode ser nulo";
-                              return null;
-                            },
-                          ),
-                        ),
-                    ),
-                  ),
-                ],
-              ),
             const SizedBox(height: 50,),
             SizedBox(
               
@@ -81,6 +52,7 @@ class NimGame extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20,),
+            TextButton(onPressed: () => jogar(), child: Text("Jogar")),
             Text(
               "$currentPlayer retirou $qntRetirar do jogo",
               style: styleText(),

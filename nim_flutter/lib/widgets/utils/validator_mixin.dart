@@ -4,11 +4,11 @@ mixin Validator{
     return null;
   }
   String? maiorQueOsLimitesPalitosNoJogo(int value){
-    if(value>7 ||value<13)return 'Valor fora dos limites';
+    if(value<7 ||value>13)return 'Valor fora dos limites';
     return null;
   }
   String? maiorLimiteJogada(int value){
-    if(value>1 || value<3)return 'Valor fora dos limites';
+    if(value<1 || value>3)return 'Valor fora dos limites';
     return null;
   }
 
