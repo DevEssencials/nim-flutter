@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:nim_flutter/pages/dois_jogadores_page.dart';
-import 'package:nim_flutter/widgets/aler_dialog.dart';
 import 'package:nim_flutter/widgets/customer/dropdown_custom.dart';
 import 'package:nim_flutter/widgets/customer/text_field_customer.dart';
 import 'package:nim_flutter/widgets/utils/validator_mixin.dart';
@@ -13,8 +12,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with Validator{
-  final TextEditingController _p1 = TextEditingController();
-  final TextEditingController _p2 = TextEditingController();
   final TextEditingController _qntMaxRController = TextEditingController();
   final TextEditingController _qntMaxPController = TextEditingController();
 
@@ -36,11 +33,77 @@ class _HomePageState extends State<HomePage> with Validator{
     ),
   ];
 
-  void inserirNomesJogadore(){
-    setState(() {
-      showDialog(context: context, builder: (BuildContext context) => DialogBox(controller: _p1,controller2: _p2,));
-    });
+  void inserirNomesJogadores() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        final _formKeyNomes = GlobalKey<FormState>();
+        final _p1Controller = TextEditingController();
+        final _p2Controller = TextEditingController();
+
+        return AlertDialog(
+          backgroundColor: Colors.pink[100],
+          content: SizedBox(
+            height: 180,
+            child: Form(
+              key: _formKeyNomes,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                const Text("Insira o nome do jogadores"),
+                TextFormField(
+                  controller: _p1Controller,
+                  validator: (value) => isNotEmpty(value),
+                ),
+                TextFormField(
+                  controller: _p2Controller,
+                  validator: (value) => combineValidator([
+                    () => isNotEmpty(value),
+                    () => validarNomes(_p1Controller.text, _p2Controller.text)
+                  ]),
+                ),
+                const SizedBox(height: 9,),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      if (_p1Controller.text != _p2Controller.text) {
+                        Navigator.of(context).pop(); // Fecha o AlertDialog
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => DoisJogadoresPage(
+                              player1: _p1Controller.text,
+                              player2: _p2Controller.text,
+                              qntdMaxRetirar: int.parse(_qntMaxRController.text),
+                              qntdPalitoJogo: int.parse(_qntMaxPController.text),
+                            ),
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Os nomes dos jogadores não podem ser iguais.')),
+                        );
+                      }
+                    }
+                  },
+                  style: const ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(Colors.pinkAccent),
+                  ), 
+                  child: const Text(
+                    "Iniciar Jogo",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              ]
+                // ... (restante dos campos do formulário)
+                
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +199,7 @@ class _HomePageState extends State<HomePage> with Validator{
                             )
                           )
                         ); */
-                        inserirNomesJogadore();
+                        inserirNomesJogadores();
                         
                       } else if(dropdownValue == 'computador'){
 

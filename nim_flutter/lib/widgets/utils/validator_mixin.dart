@@ -1,14 +1,14 @@
 mixin Validator{
-  String? isNotEmpty(dynamic value){
+  String? isNotEmpty( value){
     if(value.isEmpty)return 'Campo obrigatório';
     return null;
   }
   String? maiorQueOsLimitesPalitosNoJogo(int value){
-    if(value>33 ||value<5)return 'Valor fora dos limites';
+    if(value>7 ||value<13)return 'Valor fora dos limites';
     return null;
   }
   String? maiorLimiteJogada(int value){
-    if(value>5 || value<3)return 'Valor fora dos limites';
+    if(value>1 || value<3)return 'Valor fora dos limites';
     return null;
   }
 
@@ -30,6 +30,11 @@ mixin Validator{
 
   String? dropdownValidate(String value){
     if(value == "none")return 'Escolha algum modo';
+    return null;
+  }
+
+  String? validarNomes(String nome1, nome2){
+    if(nome1 == nome2)return 'Os Nomes devem ser diferentes';
     return null;
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nim_flutter/pages/home_page.dart';
+import 'package:nim_flutter/widgets/nim_game.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      home: const NimGame(qntJogo: 33, currentPlayer: 'currentPlayer', qntRetirar: 4),
       debugShowCheckedModeBanner: false,
     );
   }

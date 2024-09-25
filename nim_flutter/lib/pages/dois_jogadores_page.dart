@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:nim_flutter/models/jogo_class.dart';
+import 'package:nim_flutter/widgets/nim_game.dart';
 
 class DoisJogadoresPage extends StatefulWidget {
   final int qntdMaxRetirar;
   final int qntdPalitoJogo;
+  final String player1;
+  final String player2;
   const DoisJogadoresPage({
+    required this.player1,
+    required this.player2,
     required this.qntdMaxRetirar,
     required this.qntdPalitoJogo,
     super.key});
@@ -13,36 +19,16 @@ class DoisJogadoresPage extends StatefulWidget {
 }
 
 class _DoisJogadoresPageState extends State<DoisJogadoresPage> {
-  final TextEditingController _p1 = TextEditingController();
-  final TextEditingController _p2 = TextEditingController();
+  bool isPlayer1 = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //inserir os nomes dos jogadores - aplicar a regra de não ter dois jogadores com mesmo nome
-      body: Stack(
-        children: [
-          AlertDialog(
-            title: const Text("Insira os nomes dos Jogadores"),
-            content: const Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextField(),
-                SizedBox( height: 10,),
-                TextField(),
-              ],
-            ),
-            actions: [
-              TextButton(onPressed: (){}, child: Text("Jogar"))
-            ],
-          )
-        ],
-      ),
-
-      // gridbuilder com base nas jogadas de cada usuário
-
-      // dropdown button regulado com o max de palitos pra retirar estipulado no início do app 
-
-      
+      backgroundColor: Colors.pink[100],
+      body: NimGame(
+        qntJogo: widget.qntdPalitoJogo, 
+        currentPlayer: (isPlayer1)?widget.player1:widget.player2, 
+        qntRetirar: 10,),
     );
   }
 }
