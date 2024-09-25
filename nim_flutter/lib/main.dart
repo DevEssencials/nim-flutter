@@ -18,10 +18,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: HomePage(),
+      home: const HomePage(),
       //const NimGame(qntJogo: 33, currentPlayer: 'currentPlayer', qntRetirar: 4),
       debugShowCheckedModeBanner: false,
     );
   }
 }
-

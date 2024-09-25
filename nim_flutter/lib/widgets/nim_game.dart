@@ -9,8 +9,13 @@ class NimGame extends StatelessWidget {
   final String currentPlayer;
   final int qntRetirar;
   final jogar;
-  
-  const NimGame({super.key,required this.jogar, required this.qntJogo, required this.currentPlayer, required this.qntRetirar});
+
+  const NimGame(
+      {super.key,
+      required this.jogar,
+      required this.qntJogo,
+      required this.currentPlayer,
+      required this.qntRetirar});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +36,6 @@ class NimGame extends StatelessWidget {
                     "Jogador atual: ",
                     style: styleText(),
                   ),
-
                   Text(
                     currentPlayer,
                     style: styleText(),
@@ -39,19 +43,22 @@ class NimGame extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 50,),
+            const SizedBox(
+              height: 50,
+            ),
             SizedBox(
-              
               height: 400,
               width: 400,
               child: GridView.builder(
-                gridDelegate: gridDelegate(), 
+                gridDelegate: gridDelegate(),
                 itemBuilder: (context, index) => formaContainer(),
                 itemCount: qntJogo,
                 shrinkWrap: true,
               ),
             ),
-            const SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
             TextButton(onPressed: () => jogar(), child: Text("Jogar")),
             Text(
               "$currentPlayer retirou $qntRetirar do jogo",
