@@ -121,7 +121,7 @@ class _NimGameState extends State<NimGame> {
               ],
             ),
 
-            const SizedBox(height: 100),
+            const SizedBox(height: 50),
 
             // Botão Jogar estilizado
             ElevatedButton(

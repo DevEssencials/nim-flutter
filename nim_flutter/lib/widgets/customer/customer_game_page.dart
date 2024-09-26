@@ -15,7 +15,7 @@ TextStyle primaryTextStyle({double fontSize = 20, FontWeight fontWeight = FontWe
 // Estilo do botão
 ButtonStyle elevatedButtonStyle() {
   return ElevatedButton.styleFrom(
-    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(12),
     ),

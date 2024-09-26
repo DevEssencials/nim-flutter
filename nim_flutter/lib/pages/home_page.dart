@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:nim_flutter/pages/comp_page.dart';
 import 'package:nim_flutter/pages/dois_jogadores_page.dart';
+import 'package:nim_flutter/widgets/customer/alert_single_player_custom.dart';
 import 'package:nim_flutter/widgets/customer/dropdown_custom.dart';
 import 'package:nim_flutter/widgets/customer/input_decoration_custom.dart';
 import 'package:nim_flutter/widgets/customer/text_field_customer.dart';
@@ -50,6 +52,86 @@ class _HomePageState extends State<HomePage> with Validator {
     super.dispose();
   }
   
+
+void inserirNomeJogadorUnico(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      final formKeyNomeUnico = GlobalKey<FormState>();
+      return AlertDialog(
+        backgroundColor: const Color.fromARGB(255, 255, 35, 109),
+        content: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30),
+          child: SizedBox(
+            height: 250,
+            width: 400,
+            child: Form(
+              key: formKeyNomeUnico,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Título do Dialog
+                  Expanded(
+                    flex: 3,
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Text(
+                        "INSIRA O NOME DO JOGADOR",
+                        style: customTitleTextStyle(),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+
+                  // Campo de texto para o nome do jogador
+                  Expanded(
+                    flex: 2,
+                    child: TextFormField(
+                      decoration: customInputDecorations(),
+                      style: const TextStyle(color: Colors.white),
+                      controller: _singlePlayerName,
+                      validator: (value) => isNotEmpty(value),
+                    ),
+                  ),
+
+                  // Botão de "Iniciar Jogo"
+                  Expanded(
+                    flex: 1,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (formKeyNomeUnico.currentState!.validate()) {
+                          Navigator.of(context).pop(); // Fecha o AlertDialog
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => CompPage(
+                                nomeJogador: _singlePlayerName.text,
+                                qntdMaxRetirar:
+                                    int.parse(_qntMaxRController.text),
+                                qntdPalitoJogo:
+                                    int.parse(_qntMaxPController.text),
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                      style: customButtonStyle(),
+                      child: Text(
+                        "INICIAR JOGO",
+                        style: customButtonTextStyle(),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
+
 
   void inserirNomesJogadores() {
     showDialog(
@@ -147,12 +229,10 @@ class _HomePageState extends State<HomePage> with Validator {
                                 color: Color.fromARGB(255, 255, 35, 109),
                                 fontWeight: FontWeight.w900),
                           ),
-                        ),
                       ),
-                    ]
-                    // ... (restante dos campos do formulário)
-
                     ),
+                  ]
+                ),
               ),
             ),
           ),
@@ -229,7 +309,7 @@ class _HomePageState extends State<HomePage> with Validator {
 
               //escolher quantidade de palitos maxima por jogada 1 a 3
               Visibility(
-                visible: (dropdownValue == 'VS') ? true : false,
+                visible: ( dropdownValue == 'VS' ||  dropdownValue == 'computador') ? true : false,
                 child: Column(
                   children: [
                     TextFormField(
@@ -268,7 +348,7 @@ class _HomePageState extends State<HomePage> with Validator {
                 ),
               ),
               // Text field pra inserir o nome quando for computador
-              Visibility(
+              /* Visibility(
                 visible: (dropdownValue == 'computador') ? true : false,
                 child: TextFormField(
                   style: const TextStyle(color: Colors.white),
@@ -278,7 +358,7 @@ class _HomePageState extends State<HomePage> with Validator {
                   ),
                   validator: (value) => isNotEmpty(value),                    
                 ),
-              ),
+              ), */
               //iniciar Jogo
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 30.0),
@@ -288,7 +368,7 @@ class _HomePageState extends State<HomePage> with Validator {
                       if (dropdownValue == 'VS') {
                         inserirNomesJogadores();
                       } else if (dropdownValue == 'computador') {
-
+                        inserirNomeJogadorUnico(context);
                       }
                     }
                   },

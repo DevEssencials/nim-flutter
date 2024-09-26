@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nim_flutter/models/jogo_class.dart';
+import 'package:nim_flutter/widgets/customer/customer_game_page.dart';
 import 'package:nim_flutter/widgets/nim_game.dart';
 
 class CompPage extends StatefulWidget {
@@ -36,18 +37,48 @@ class _CompPageState extends State<CompPage> {
   }
   //Jogar computador
   void fazerJogada(int jogada){
-    if(gameSinglePlayer.verificarJogada(jogada)){
-      gameSinglePlayer.fazerJogada(jogada);
-      palitosRestantes -= jogada;
-    } else{
-      trocarParaComputador();
-      int jComp = gameSinglePlayer.jogarComp();
-      palitosRestantes -= jComp;
-    }
+    setState(() {
+      if(gameSinglePlayer.verificarJogada(jogada)){
+        gameSinglePlayer.fazerJogada(jogada);
+        palitosRestantes -= jogada;
+        if(gameSinglePlayer.isGameOver()){
+          alguemVenceu(isPessoa?widget.nomeJogador:"Computador");
+        } else {
+          trocarParaComputador();
+          int jComp = gameSinglePlayer.jogarComp();
+          palitosRestantes -= jComp;
+        }
+      } else{
+        ScaffoldMessenger.of(context).showSnackBar(
+          snackBarStyle("Não foi possível fazer jogada! Verifique sua jogada e tente novamente")
+        );
+      }
+    });
+    
   }
 
   void trocarParaComputador(){
-    isPessoa = !isPessoa;
+    setState(() {
+      isPessoa = !isPessoa; 
+    });
+  }
+  
+  void alguemVenceu(String nameWiner) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Fim de Jogo'),
+        content: Text('Parabéns $nameWiner, você venceu!!!'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            },
+            child: const Text("Voltar ao início"),
+          ),
+        ],
+      ),
+    );
   }
 
 
@@ -58,7 +89,7 @@ class _CompPageState extends State<CompPage> {
   @override
   Widget build(BuildContext context) {
     return NimGame(
-      currentPlayer: (isPessoa) ? widget.nomeJogador: "Computador",
+      currentPlayer: isPessoa ? widget.nomeJogador : "Computador",
       jogar: fazerJogada,
       qntJogo: palitosRestantes,
       qntRetirar: widget.qntdMaxRetirar,
