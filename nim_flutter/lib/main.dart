@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:nim_flutter/pages/home_page.dart';
-import 'package:nim_flutter/widgets/nim_game.dart';
 
 void main() {
   runApp(const MyApp());

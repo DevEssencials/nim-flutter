@@ -53,9 +53,9 @@ class _HomePageState extends State<HomePage> with Validator {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        final _formKeyNomes = GlobalKey<FormState>();
-        final _p1Controller = TextEditingController();
-        final _p2Controller = TextEditingController();
+        final formKeyNomes = GlobalKey<FormState>();
+        final p1Controller = TextEditingController();
+        final p2Controller = TextEditingController();
 
         return AlertDialog(
           backgroundColor: const Color.fromARGB(255, 255, 35, 109),
@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> with Validator {
               height: 350,
               width: 400,
               child: Form(
-                key: _formKeyNomes,
+                key: formKeyNomes,
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -89,7 +89,7 @@ class _HomePageState extends State<HomePage> with Validator {
                         child: TextFormField(
                           decoration: customInputDecoration(),
                           style:const TextStyle(color: Colors.white),
-                          controller: _p1Controller,
+                          controller: p1Controller,
                           validator: (value) => isNotEmpty(value),
                         ),
                       ),
@@ -98,11 +98,11 @@ class _HomePageState extends State<HomePage> with Validator {
                         child: TextFormField(
                           decoration: customInputDecoration(),
                           style:const TextStyle(color: Colors.white),
-                          controller: _p2Controller,
+                          controller: p2Controller,
                           validator: (value) => combineValidator([
                             () => isNotEmpty(value),
                             () => validarNomes(
-                                _p1Controller.text, _p2Controller.text)
+                                p1Controller.text, p2Controller.text)
                           ]),
                         ),
                       ),
@@ -111,14 +111,14 @@ class _HomePageState extends State<HomePage> with Validator {
                         child: ElevatedButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              if (_p1Controller.text != _p2Controller.text) {
+                              if (p1Controller.text != p2Controller.text) {
                                 Navigator.of(context)
                                     .pop(); // Fecha o AlertDialog
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) => DoisJogadoresPage(
-                                      player1: _p1Controller.text,
-                                      player2: _p2Controller.text,
+                                      player1: p1Controller.text,
+                                      player2: p2Controller.text,
                                       qntdMaxRetirar:
                                           int.parse(_qntMaxRController.text),
                                       qntdPalitoJogo:
