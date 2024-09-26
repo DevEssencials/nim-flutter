@@ -1,6 +1,6 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:nim_flutter/models/jogo_class.dart';
+import 'package:nim_flutter/widgets/customer/customer_game_page.dart';
 import 'package:nim_flutter/widgets/nim_game.dart';
 
 class DoisJogadoresPage extends StatefulWidget {
@@ -8,14 +8,13 @@ class DoisJogadoresPage extends StatefulWidget {
   final int qntdPalitoJogo;
   final String player1;
   final String player2;
-  final bool isVsComputer;
+
 
   const DoisJogadoresPage({
     required this.player1,
     required this.player2,
     required this.qntdMaxRetirar,
     required this.qntdPalitoJogo,
-    this.isVsComputer = false,
     super.key,
   });
 
@@ -35,7 +34,7 @@ class _DoisJogadoresPageState extends State<DoisJogadoresPage> {
       maxJogada: widget.qntdMaxRetirar,
       quantidadeNoJogo: widget.qntdPalitoJogo,
       namePlayer1: widget.player1,
-      namePlayer2: widget.isVsComputer ? "Computador" : widget.player2,
+      namePlayer2: widget.player2,
     );
     palitosRestantes = widget.qntdPalitoJogo;
   }
@@ -48,24 +47,23 @@ class _DoisJogadoresPageState extends State<DoisJogadoresPage> {
 
   void retirarPalitos(int jogada) {
     setState(() {
-      game.fazerJogada(jogada);
-      palitosRestantes -= jogada;
-      if (game.isGameOver()) {
-        someoneWins(isPlayer1 ? widget.player2 : widget.player1);
-      } else {
-        trocarJogador();
-        if (widget.isVsComputer && !isPlayer1) {
-          jogarComputador();
+      if(game.verificarJogada(jogada)){
+        game.fazerJogada(jogada);
+        palitosRestantes -= jogada;
+        if (game.isGameOver()) {
+          someoneWins(isPlayer1 ? widget.player2 : widget.player1);
+        } else {
+          trocarJogador();
         }
+      }else{
+        ScaffoldMessenger.of(context).showSnackBar(
+          snackBarStyle("Não foi possível fazer jogada! Verifique sua jogada e tente novamente")
+        );
       }
     });
   }
 
-  void jogarComputador() {
-    final random = Random();
-    final jogada = random.nextInt(widget.qntdMaxRetirar) + 1;
-    retirarPalitos(jogada);
-  }
+
 
   void someoneWins(String nameWiner) {
     showDialog(

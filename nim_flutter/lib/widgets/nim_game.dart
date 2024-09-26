@@ -108,6 +108,9 @@ class _NimGameState extends State<NimGame> {
                       if (value != null && value <= widget.qntJogo) {
                         palitosParaRetirar = value;
                       }
+                      else{
+                        ScaffoldMessenger.of(context).showSnackBar(snackBarStyle("Não foi possivel Fazer jogada!"));
+                      }
                     });
                   },
                   style: const TextStyle(

@@ -42,7 +42,8 @@ class JogoMultPlayer extends JogoClass{
 }
 
 class JogoComputador extends JogoClass{
-  JogoComputador({required super.maxJogada, required super.quantidadeNoJogo});
+  final String nomeJogador;
+  JogoComputador({required super.maxJogada, required super.quantidadeNoJogo, required this.nomeJogador});
 
   int jogarComp(){
     int aleatorio = Random().nextInt(super.maxJogada) + 1;

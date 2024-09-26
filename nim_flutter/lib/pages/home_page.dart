@@ -15,6 +15,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with Validator {
   final TextEditingController _qntMaxRController = TextEditingController();
   final TextEditingController _qntMaxPController = TextEditingController();
+  final _singlePlayerName = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   String? dropdownValue = "none";
@@ -48,6 +49,7 @@ class _HomePageState extends State<HomePage> with Validator {
     _qntMaxRController.dispose();
     super.dispose();
   }
+  
 
   void inserirNomesJogadores() {
     showDialog(
@@ -135,7 +137,7 @@ class _HomePageState extends State<HomePage> with Validator {
                               }
                             }
                           },
-                     style: ElevatedButton.styleFrom(
+                    style: ElevatedButton.styleFrom(
                      minimumSize: const Size(900, 50), // Aumenta a largura e altura
                             padding: const  EdgeInsets.symmetric(   vertical: 0, horizontal: 10),
                             backgroundColor: const  Color.fromARGB(255, 255, 255, 255)),
@@ -246,6 +248,8 @@ class _HomePageState extends State<HomePage> with Validator {
                     ),
 
                     //escolher a quantidade máxima de palitos no jogo 5 a 33
+                    /// The above Dart code snippet is creating a TextFormField widget with a specific
+                    /// style, controller, decoration, and validator.
                     TextFormField(
                       style: const TextStyle(color: Colors.white),
                       controller: _qntMaxPController,
@@ -263,6 +267,18 @@ class _HomePageState extends State<HomePage> with Validator {
                   ],
                 ),
               ),
+              // Text field pra inserir o nome quando for computador
+              Visibility(
+                visible: (dropdownValue == 'computador') ? true : false,
+                child: TextFormField(
+                  style: const TextStyle(color: Colors.white),
+                  controller: _singlePlayerName,
+                  decoration: customTextField(
+                    "Insira seu nome pra Jogar"
+                  ),
+                  validator: (value) => isNotEmpty(value),                    
+                ),
+              ),
               //iniciar Jogo
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 30.0),
@@ -271,7 +287,9 @@ class _HomePageState extends State<HomePage> with Validator {
                     if (_formKey.currentState!.validate()) {
                       if (dropdownValue == 'VS') {
                         inserirNomesJogadores();
-                      } else if (dropdownValue == 'computador') {}
+                      } else if (dropdownValue == 'computador') {
+
+                      }
                     }
                   },
                   style: ElevatedButton.styleFrom(
