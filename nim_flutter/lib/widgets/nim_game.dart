@@ -112,7 +112,7 @@ class _NimGameState extends State<NimGame> {
                     setState(() {
                       // Atualiza palitosParaRetirar apenas se o valor for válido
                       if (value != null  && widget.jogada) {
-                        palitosParaRetirar = value;
+                          palitosParaRetirar = value;
                       }
                       else{
                         ScaffoldMessenger.of(context).showSnackBar(snackBarStyle("Não foi possivel Fazer jogada!"));
@@ -132,19 +132,25 @@ class _NimGameState extends State<NimGame> {
             // Botão Jogar estilizado
             ElevatedButton(
               style: elevatedButtonStyle(), // Usando o estilo do botão
-              onPressed: () async {
-                if(widget.jogada){
+              onPressed: () {
+                setState(() {
+                  if(widget.jogada){
                   if(!widget.isComp){
                     widget.jogar(palitosParaRetirar);
-                  }else{
-                    widget.jogarComp;
-                  }
-                  
-                  ScaffoldMessenger.of(context).showSnackBar(
+                    ScaffoldMessenger.of(context).showSnackBar(
                     snackBarStyle(
                       '${widget.currentPlayer} retirou $palitosParaRetirar palito(s).'), // Estilo do Snackbar
                   );
-                }
+                  }else{
+                    widget.jogarComp!();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      snackBarStyle(
+                        'Aguarde a jogada do computador'), // Estilo do Snackbar
+                      );
+                    } 
+                  }
+                });
+                
                 
               },
               child: const Text(

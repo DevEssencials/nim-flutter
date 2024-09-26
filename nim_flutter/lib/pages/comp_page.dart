@@ -42,12 +42,13 @@ class _CompPageState extends State<CompPage> {
   void fazerJogada(int jogada){
     setState(() {
       if(gameSinglePlayer.verificarJogada(jogada)){
+        ispossible = true;
         gameSinglePlayer.fazerJogada(jogada);
         palitosRestantes -= jogada;
         if(gameSinglePlayer.isGameOver()){
           alguemVenceu("Computador");
         } else {
-          isPessoa = false;
+          isPessoa = !isPessoa;
         }
       } else{
         ispossible = false;
@@ -60,12 +61,14 @@ class _CompPageState extends State<CompPage> {
 
   void jogarComp(){
     setState(() {
+      ispossible = true;
         int jComp = gameSinglePlayer.jogarComp();
+        gameSinglePlayer.fazerJogada(jComp);
         palitosRestantes -= jComp;
         if(gameSinglePlayer.isGameOver()){
           alguemVenceu(widget.nomeJogador);
         }else{
-          isPessoa = true;
+          isPessoa = !isPessoa;
         }
     });
   }

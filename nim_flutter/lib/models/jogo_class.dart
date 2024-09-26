@@ -47,7 +47,6 @@ class JogoComputador extends JogoClass{
 
   int jogarComp(){
     int aleatorio = Random().nextInt(min(super.maxJogada, super.quantidadeNoJogo)) + 1;
-    quantidadeNoJogo -= aleatorio;
     return aleatorio;
   }
 }
