@@ -72,11 +72,11 @@ class _HomePageState extends State<HomePage> with Validator {
                       Expanded(
                         flex: 4,
                         child: Container(
-                          margin:const EdgeInsets.only(top: 20),
-                          padding:const EdgeInsets.symmetric(horizontal: 15),
-                          child:const Text(
+                          margin: const EdgeInsets.only(top: 20),
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: const Text(
                             "INSIRA O NOME DOS JOGADORES",
-                            style:TextStyle(
+                            style: TextStyle(
                                 fontSize: 26,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> with Validator {
                         flex: 2,
                         child: TextFormField(
                           decoration: customInputDecoration(),
-                          style:const TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.white),
                           controller: p1Controller,
                           validator: (value) => isNotEmpty(value),
                         ),
@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> with Validator {
                         flex: 2,
                         child: TextFormField(
                           decoration: customInputDecoration(),
-                          style:const TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.white),
                           controller: p2Controller,
                           validator: (value) => combineValidator([
                             () => isNotEmpty(value),
@@ -234,7 +234,7 @@ class _HomePageState extends State<HomePage> with Validator {
                 child: Column(
                   children: [
                     TextFormField(
-                      style:const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white),
                       controller: _qntMaxRController,
                       decoration: customTextField(
                           "Quantidade maxima de palitos pra retirar(min 1, max 3)"),
@@ -277,13 +277,17 @@ class _HomePageState extends State<HomePage> with Validator {
                       } else if (dropdownValue == 'computador') {}
                     }
                   },
-                  style: const ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(
-                        Color.fromARGB(255, 245, 23, 97)),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 245, 23, 97),
+                    minimumSize:
+                        const Size(250, 50), // Aumenta a largura e altura
                   ),
-                  child: const Text(
-                    "Jogar",
-                    style: TextStyle(color: Colors.white),
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    child: Text(
+                      "Jogar",
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
                   ),
                 ),
               ),
