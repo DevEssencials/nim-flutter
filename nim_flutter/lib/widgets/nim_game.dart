@@ -3,7 +3,6 @@ import 'package:nim_flutter/widgets/customer/customer_game_page.dart';
 import 'package:nim_flutter/widgets/customer/format_container.dart';
 import 'package:nim_flutter/widgets/customer/grid_delegade.dart';
 
-
 class NimGame extends StatefulWidget {
   final int qntJogo;
   final String currentPlayer;
@@ -40,18 +39,22 @@ class _NimGameState extends State<NimGame> {
           children: [
             // Jogador atual
             Container(
-              decoration: containerDecoration(), // Usando o estilo customizado para o container
+              decoration:
+                  containerDecoration(), // Usando o estilo customizado para o container
               padding: const EdgeInsets.all(16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     "Jogador atual: ",
-                    style: primaryTextStyle(), // Usando o estilo customizado para o texto
+                    style:
+                        primaryTextStyle(), // Usando o estilo customizado para o texto
                   ),
                   Text(
                     widget.currentPlayer,
-                    style: primaryTextStyle(fontSize: 24, fontWeight: FontWeight.bold), // Texto em destaque
+                    style: primaryTextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold), // Texto em destaque
                   ),
                 ],
               ),
@@ -82,8 +85,15 @@ class _NimGameState extends State<NimGame> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 DropdownButton<int>(
-                  value: palitosParaRetirar,
-                  items: List.generate(widget.qntRetirar, (index) => index + 1)
+                  value: palitosParaRetirar > widget.qntJogo
+                      ? widget.qntJogo
+                      : palitosParaRetirar, // Ajusta para o valor máximo disponível
+                  items: List.generate(
+                    (widget.qntRetirar < widget.qntJogo)
+                        ? widget.qntRetirar
+                        : widget.qntJogo, // Gera apenas opções válidas
+                    (index) => index + 1,
+                  )
                       .map((value) => DropdownMenuItem<int>(
                             value: value,
                             child: Text(
@@ -94,7 +104,10 @@ class _NimGameState extends State<NimGame> {
                       .toList(),
                   onChanged: (value) {
                     setState(() {
-                      palitosParaRetirar = value!;
+                      // Atualiza palitosParaRetirar apenas se o valor for válido
+                      if (value != null && value <= widget.qntJogo) {
+                        palitosParaRetirar = value;
+                      }
                     });
                   },
                   style: const TextStyle(
@@ -105,7 +118,7 @@ class _NimGameState extends State<NimGame> {
               ],
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 100),
 
             // Botão Jogar estilizado
             ElevatedButton(
@@ -113,12 +126,16 @@ class _NimGameState extends State<NimGame> {
               onPressed: () {
                 widget.jogar(palitosParaRetirar);
                 ScaffoldMessenger.of(context).showSnackBar(
-                  snackBarStyle('${widget.currentPlayer} retirou $palitosParaRetirar palito(s).'), // Estilo do Snackbar
+                  snackBarStyle(
+                      '${widget.currentPlayer} retirou $palitosParaRetirar palito(s).'), // Estilo do Snackbar
                 );
               },
               child: const Text(
                 "Jogar",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               ),
             ),
           ],

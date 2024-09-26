@@ -135,13 +135,10 @@ class _HomePageState extends State<HomePage> with Validator {
                               }
                             }
                           },
-                          style: const ButtonStyle(
-                            padding: WidgetStatePropertyAll(
-                                EdgeInsets.symmetric(
-                                    vertical: 0, horizontal: 10)),
-                            backgroundColor: WidgetStatePropertyAll(
-                                Color.fromARGB(255, 255, 255, 255)),
-                          ),
+                     style: ElevatedButton.styleFrom(
+                     minimumSize: const Size(900, 50), // Aumenta a largura e altura
+                            padding: const  EdgeInsets.symmetric(   vertical: 0, horizontal: 10),
+                            backgroundColor: const  Color.fromARGB(255, 255, 255, 255)),
                           child: const Text(
                             "INICIAR JOGO",
                             style: TextStyle(
