@@ -45,11 +45,9 @@ class _CompPageState extends State<CompPage> {
         gameSinglePlayer.fazerJogada(jogada);
         palitosRestantes -= jogada;
         if(gameSinglePlayer.isGameOver()){
-          alguemVenceu(isPessoa?widget.nomeJogador:"Computador");
+          alguemVenceu("Computador");
         } else {
-          trocarParaComputador();
-          int jComp = gameSinglePlayer.jogarComp();
-          palitosRestantes -= jComp;
+          isPessoa = false;
         }
       } else{
         ispossible = false;
@@ -58,14 +56,21 @@ class _CompPageState extends State<CompPage> {
         );
       }
     });
-    
   }
 
-  void trocarParaComputador(){
+  void jogarComp(){
     setState(() {
-      isPessoa = !isPessoa; 
+        int jComp = gameSinglePlayer.jogarComp();
+        palitosRestantes -= jComp;
+        if(gameSinglePlayer.isGameOver()){
+          alguemVenceu(widget.nomeJogador);
+        }else{
+          isPessoa = true;
+        }
     });
   }
+
+  
 
   void alguemVenceu(String nameWiner) {
     showDialog(
@@ -84,17 +89,11 @@ class _CompPageState extends State<CompPage> {
       ),
     );
   }
-
-  
-
-
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return NimGame(
+      jogarComp: jogarComp,
+      isComp: !isPessoa,
       currentPlayer: isPessoa ? widget.nomeJogador : "Computador",
       jogar: fazerJogada,
       qntJogo: palitosRestantes,

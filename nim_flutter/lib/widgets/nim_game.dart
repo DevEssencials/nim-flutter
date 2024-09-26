@@ -9,9 +9,13 @@ class NimGame extends StatefulWidget {
   final int qntRetirar;
   final Function(int) jogar;
   final bool jogada;
+  final bool isComp;
+  final Function? jogarComp;
 
   const NimGame({
     super.key,
+    required this.jogarComp,
+    required this.isComp,
     required this.jogada,
     required this.jogar,
     required this.qntJogo,
@@ -87,11 +91,11 @@ class _NimGameState extends State<NimGame> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 DropdownButton<int>(
-                  value: palitosParaRetirar > widget.qntJogo
+                  value: palitosParaRetirar >= widget.qntJogo
                       ? widget.qntJogo
                       : palitosParaRetirar, // Ajusta para o valor máximo disponível
                   items: List.generate(
-                    (widget.qntRetirar < widget.qntJogo)
+                    (widget.qntRetirar <= widget.qntJogo)
                         ? widget.qntRetirar
                         : widget.qntJogo, // Gera apenas opções válidas
                     (index) => index + 1,
@@ -107,7 +111,7 @@ class _NimGameState extends State<NimGame> {
                   onChanged: (value) {
                     setState(() {
                       // Atualiza palitosParaRetirar apenas se o valor for válido
-                      if (value != null && value <= widget.qntJogo && widget.jogada) {
+                      if (value != null  && widget.jogada) {
                         palitosParaRetirar = value;
                       }
                       else{
@@ -128,9 +132,14 @@ class _NimGameState extends State<NimGame> {
             // Botão Jogar estilizado
             ElevatedButton(
               style: elevatedButtonStyle(), // Usando o estilo do botão
-              onPressed: () {
+              onPressed: () async {
                 if(widget.jogada){
-                  widget.jogar(palitosParaRetirar);
+                  if(!widget.isComp){
+                    widget.jogar(palitosParaRetirar);
+                  }else{
+                    widget.jogarComp;
+                  }
+                  
                   ScaffoldMessenger.of(context).showSnackBar(
                     snackBarStyle(
                       '${widget.currentPlayer} retirou $palitosParaRetirar palito(s).'), // Estilo do Snackbar
