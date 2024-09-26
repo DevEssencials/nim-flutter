@@ -198,7 +198,7 @@ void inserirNomeJogadorUnico(BuildContext context) {
                         child: ElevatedButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              if (p1Controller.text != p2Controller.text) {
+                              if (p1Controller.text != p2Controller.text && p1Controller.text.isNotEmpty && p2Controller.text.isNotEmpty) {
                                 Navigator.of(context)
                                     .pop(); // Fecha o AlertDialog
                                 Navigator.of(context).push(
@@ -217,7 +217,7 @@ void inserirNomeJogadorUnico(BuildContext context) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                       content: Text(
-                                          'Os nomes dos jogadores não podem ser iguais.')),
+                                          'Os jogadores precisam ter um nome e não podem ser iguais.')),
                                 );
                               }
                             }
