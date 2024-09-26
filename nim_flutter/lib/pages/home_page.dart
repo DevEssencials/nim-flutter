@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> with Validator {
         return AlertDialog(
           backgroundColor: const Color.fromARGB(255, 255, 35, 109),
           content: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30),
+            padding: const EdgeInsets.symmetric(horizontal: 30),
             child: SizedBox(
               height: 350,
               width: 400,
@@ -72,11 +72,11 @@ class _HomePageState extends State<HomePage> with Validator {
                       Expanded(
                         flex: 4,
                         child: Container(
-                          margin: EdgeInsets.only(top: 20),
-                          padding: EdgeInsets.symmetric(horizontal: 15),
-                          child: Text(
+                          margin:const EdgeInsets.only(top: 20),
+                          padding:const EdgeInsets.symmetric(horizontal: 15),
+                          child:const Text(
                             "INSIRA O NOME DOS JOGADORES",
-                            style: TextStyle(
+                            style:TextStyle(
                                 fontSize: 26,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> with Validator {
                         flex: 2,
                         child: TextFormField(
                           decoration: customInputDecoration(),
-                          style: TextStyle(color: Colors.white),
+                          style:const TextStyle(color: Colors.white),
                           controller: _p1Controller,
                           validator: (value) => isNotEmpty(value),
                         ),
@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> with Validator {
                         flex: 2,
                         child: TextFormField(
                           decoration: customInputDecoration(),
-                          style: TextStyle(color: Colors.white),
+                          style:const TextStyle(color: Colors.white),
                           controller: _p2Controller,
                           validator: (value) => combineValidator([
                             () => isNotEmpty(value),
@@ -145,7 +145,7 @@ class _HomePageState extends State<HomePage> with Validator {
                           child: const Text(
                             "INICIAR JOGO",
                             style: TextStyle(
-                                color: const Color.fromARGB(255, 255, 35, 109),
+                                color: Color.fromARGB(255, 255, 35, 109),
                                 fontWeight: FontWeight.w900),
                           ),
                         ),
@@ -234,7 +234,7 @@ class _HomePageState extends State<HomePage> with Validator {
                 child: Column(
                   children: [
                     TextFormField(
-                      style: TextStyle(color: Colors.white),
+                      style:const TextStyle(color: Colors.white),
                       controller: _qntMaxRController,
                       decoration: customTextField(
                           "Quantidade maxima de palitos pra retirar(min 1, max 3)"),
@@ -250,7 +250,7 @@ class _HomePageState extends State<HomePage> with Validator {
 
                     //escolher a quantidade máxima de palitos no jogo 5 a 33
                     TextFormField(
-                      style: TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white),
                       controller: _qntMaxPController,
                       decoration: customTextField(
                           "Quantidade de palitos no Jogo(min 7, max 13)"),
@@ -268,7 +268,7 @@ class _HomePageState extends State<HomePage> with Validator {
               ),
               //iniciar Jogo
               Container(
-                margin: EdgeInsets.symmetric(vertical: 30.0),
+                margin: const EdgeInsets.symmetric(vertical: 30.0),
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
