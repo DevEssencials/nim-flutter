@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 InputDecoration customTextField(String label) {
   return InputDecoration(
     hintText: label,
+    hintMaxLines: 3,
     hintStyle: const TextStyle( color:  Colors.white),
     filled: true,
     fillColor: const Color.fromARGB(255, 255, 35, 109),
