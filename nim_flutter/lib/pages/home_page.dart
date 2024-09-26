@@ -18,6 +18,8 @@ class _HomePageState extends State<HomePage> with Validator {
   final TextEditingController _qntMaxRController = TextEditingController();
   final TextEditingController _qntMaxPController = TextEditingController();
   final _singlePlayerName = TextEditingController();
+  final p1Controller = TextEditingController();
+  final p2Controller = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   String? dropdownValue = "none";
@@ -49,6 +51,10 @@ class _HomePageState extends State<HomePage> with Validator {
   void dispose() {
     _qntMaxPController.dispose();
     _qntMaxRController.dispose();
+    _singlePlayerName.dispose();
+    p1Controller.dispose();
+    p2Controller.dispose();
+    dropdownValue == "none";
     super.dispose();
   }
   
@@ -138,9 +144,6 @@ void inserirNomeJogadorUnico(BuildContext context) {
       context: context,
       builder: (BuildContext context) {
         final formKeyNomes = GlobalKey<FormState>();
-        final p1Controller = TextEditingController();
-        final p2Controller = TextEditingController();
-
         return AlertDialog(
           backgroundColor: const Color.fromARGB(255, 255, 35, 109),
           content: Padding(
@@ -328,8 +331,6 @@ void inserirNomeJogadorUnico(BuildContext context) {
                     ),
 
                     //escolher a quantidade máxima de palitos no jogo 5 a 33
-                    /// The above Dart code snippet is creating a TextFormField widget with a specific
-                    /// style, controller, decoration, and validator.
                     TextFormField(
                       style: const TextStyle(color: Colors.white),
                       controller: _qntMaxPController,

@@ -25,7 +25,9 @@ class _CompPageState extends State<CompPage> {
   late JogoComputador gameSinglePlayer;
   bool isPessoa = true;
   int palitosRestantes = 0;
+  bool ispossible = true;
 
+  @override
   void initState(){
     super.initState();
     gameSinglePlayer = JogoComputador(
@@ -35,6 +37,7 @@ class _CompPageState extends State<CompPage> {
     );
     palitosRestantes = widget.qntdPalitoJogo;
   }
+
   //Jogar computador
   void fazerJogada(int jogada){
     setState(() {
@@ -49,6 +52,7 @@ class _CompPageState extends State<CompPage> {
           palitosRestantes -= jComp;
         }
       } else{
+        ispossible = false;
         ScaffoldMessenger.of(context).showSnackBar(
           snackBarStyle("Não foi possível fazer jogada! Verifique sua jogada e tente novamente")
         );
@@ -62,7 +66,7 @@ class _CompPageState extends State<CompPage> {
       isPessoa = !isPessoa; 
     });
   }
-  
+
   void alguemVenceu(String nameWiner) {
     showDialog(
       context: context,
@@ -81,6 +85,8 @@ class _CompPageState extends State<CompPage> {
     );
   }
 
+  
+
 
 
 
@@ -93,6 +99,7 @@ class _CompPageState extends State<CompPage> {
       jogar: fazerJogada,
       qntJogo: palitosRestantes,
       qntRetirar: widget.qntdMaxRetirar,
+      jogada: ispossible,
     );
   }
 }
