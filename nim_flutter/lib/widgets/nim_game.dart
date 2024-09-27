@@ -9,13 +9,10 @@ class NimGame extends StatefulWidget {
   final int qntRetirar;
   final Function(int) jogar;
   final bool jogada;
-  final bool isComp;
-  final Function? jogarComp;
+
 
   const NimGame({
     super.key,
-    required this.jogarComp,
-    required this.isComp,
     required this.jogada,
     required this.jogar,
     required this.qntJogo,
@@ -122,7 +119,7 @@ class _NimGameState extends State<NimGame> {
                   }).toList(),
                   onChanged: (value) {
                     setState(() {
-                      if (value != null && widget.jogada) {
+                      if (value != null && widget.jogada && value <= widget.qntJogo) {
                         palitosParaRetirar = value;
                         print('Novo valor selecionado: $palitosParaRetirar');
                       } else {
@@ -155,19 +152,10 @@ class _NimGameState extends State<NimGame> {
               onPressed: () {
                 setState(() {
                   if (widget.jogada) {
-                    if (!widget.isComp) {
                       widget.jogar(palitosParaRetirar);
                       ScaffoldMessenger.of(context).showSnackBar(
                         snackBarStyle(
-                            '${widget.currentPlayer} retirou $palitosParaRetirar palito(s).'), // Estilo do Snackbar
-                      );
-                    } else {
-                      widget.jogarComp!();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        snackBarStyle(
-                            'Aguarde a jogada do computador'), // Estilo do Snackbar
-                      );
-                    }
+                            '${widget.currentPlayer} retirou $palitosParaRetirar palito(s).'),);// Estilo do Snackbar
                   }
                 });
               },

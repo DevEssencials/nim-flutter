@@ -48,29 +48,59 @@ class _CompPageState extends State<CompPage> {
         if(gameSinglePlayer.isGameOver()){
           alguemVenceu("Computador");
         } else {
-          isPessoa = !isPessoa;
+          Future.delayed(const Duration(seconds: 2), () {
+          jogarComp();
+        });
         }
       } else{
         ispossible = false;
         ScaffoldMessenger.of(context).showSnackBar(
-          snackBarStyle("Não foi possível fazer jogada! Verifique sua jogada e tente novamente")
+          snackBarStyle("Não foi possível fazer jogada! Verifique sua jogada e tente novamente"),
+          
         );
       }
     });
   }
 
-  void jogarComp(){
+  void jogarComp() async{
     setState(() {
-      ispossible = true;
+    // Mostra o SnackBar com a mensagem "Espere o computador fazer a jogada..." e um CircularProgressIndicator
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Row(
+          children: [
+            Text('Espere o computador fazer a jogada...'),
+            SizedBox(width: 10),
+            CircularProgressIndicator(),
+          ],
+        ),
+        duration: Duration(seconds: 2), // Duração até o próximo passo
+      ),
+    );
+  });
+  await Future.delayed(const Duration(seconds: 2));
+    setState(()  {
         int jComp = gameSinglePlayer.jogarComp();
         gameSinglePlayer.fazerJogada(jComp);
         palitosRestantes -= jComp;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Computador retirou $jComp palito(s).'),
+        duration: const Duration(seconds: 2),
+      ),
+    );
         if(gameSinglePlayer.isGameOver()){
           alguemVenceu(widget.nomeJogador);
         }else{
-          isPessoa = !isPessoa;
+          const SnackBar(
+        content: Text('Sua vez'),
+        duration:  Duration(seconds: 1),
+      );
         }
+      
     });
+    
   }
 
   
@@ -102,8 +132,6 @@ class _CompPageState extends State<CompPage> {
   @override
   Widget build(BuildContext context) {
     return NimGame(
-      jogarComp: jogarComp,
-      isComp: !isPessoa,
       currentPlayer: isPessoa ? widget.nomeJogador : "Computador",
       jogar: fazerJogada,
       qntJogo: palitosRestantes,

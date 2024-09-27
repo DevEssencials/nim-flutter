@@ -97,8 +97,6 @@ class _DoisJogadoresPageState extends State<DoisJogadoresPage> {
     return Scaffold(
       backgroundColor: Colors.pink[100],
       body: NimGame(
-        jogarComp: null,
-        isComp: false,
         jogada: ispossible,
         jogar: retirarPalitos,
         qntJogo: palitosRestantes,
