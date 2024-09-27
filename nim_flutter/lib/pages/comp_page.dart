@@ -93,10 +93,10 @@ class _CompPageState extends State<CompPage> {
         if(gameSinglePlayer.isGameOver()){
           alguemVenceu(widget.nomeJogador);
         }else{
-          const SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Sua vez'),
         duration:  Duration(seconds: 1),
-      );
+      ));
         }
       
     });
