@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:nim_flutter/widgets/customer/customer_game_page.dart';
 import 'package:nim_flutter/widgets/customer/format_container.dart';
@@ -85,67 +83,69 @@ class _NimGameState extends State<NimGame> {
             const SizedBox(height: 20),
 
             // Dropdown para escolher quantos palitos retirar
-       Row(
-  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  children: [
-    const Text(
-      "Escolha quantos palitos retirar:",
-      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-    ),
-    DropdownButton<int>(
-  value: (palitosParaRetirar != null &&
-          palitosParaRetirar <= (widget.qntRetirar != null && widget.qntRetirar! <= widget.qntJogo 
-             ? widget.qntRetirar! 
-             : widget.qntJogo))
-             ? palitosParaRetirar
-             : null, // Verifica se o valor é válido, senão deixa null
-  items: List.generate(
-    (widget.qntRetirar != null && widget.qntRetirar! <= widget.qntJogo)
-        ? widget.qntRetirar!
-        : widget.qntJogo,
-    (index) {
-      print('Gerando item: ${index + 1}');
-      return index + 1;
-    },
-  )
-      .map((value) {
-        print('Mapeando valor: $value');
-        return DropdownMenuItem<int>(
-          value: value,
-          child: Text(
-            value.toString(),
-            style: const TextStyle(fontSize: 18),
-          ),
-        );
-      })
-      .toList(),
-  onChanged: (value) {
-    setState(() {
-      if (value != null && widget.jogada) {
-        palitosParaRetirar = value;
-        print('Novo valor selecionado: $palitosParaRetirar');
-      } else {
-        print('Jogada inválida');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              "Não foi possível fazer a jogada!",
-              style: const TextStyle(color: Colors.white),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Escolha quantos palitos retirar:",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                DropdownButton<int>(
+                  // ignore: unnecessary_null_comparison
+                  value: (palitosParaRetirar != null &&
+                          // ignore: unnecessary_null_comparison
+                          palitosParaRetirar <=
+                              (widget.qntRetirar != null &&
+                                      widget.qntRetirar! <= widget.qntJogo
+                                  ? widget.qntRetirar!
+                                  : widget.qntJogo))
+                      ? palitosParaRetirar
+                      : null, // Verifica se o valor é válido, senão deixa null
+                  items: List.generate(
+                    (widget.qntRetirar != null &&
+                            widget.qntRetirar! <= widget.qntJogo)
+                        ? widget.qntRetirar!
+                        : widget.qntJogo,
+                    (index) {
+                      print('Gerando item: ${index + 1}');
+                      return index + 1;
+                    },
+                  ).map((value) {
+                    print('Mapeando valor: $value');
+                    return DropdownMenuItem<int>(
+                      value: value,
+                      child: Text(
+                        value.toString(),
+                        style: const TextStyle(fontSize: 18),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      if (value != null && widget.jogada) {
+                        palitosParaRetirar = value;
+                        print('Novo valor selecionado: $palitosParaRetirar');
+                      } else {
+                        print('Jogada inválida');
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              "Não foi possível fazer a jogada!",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                    });
+                  },
+                  style: const TextStyle(
+                    color: Colors.black,
+                  ),
+                  dropdownColor: Colors.white,
+                )
+              ],
             ),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    });
-  },
-  style: const TextStyle(
-    color: Colors.black,
-  ),
-  dropdownColor: Colors.white,
-)
-  ],
-),
-
 
             const SizedBox(height: 50),
 
@@ -154,24 +154,22 @@ class _NimGameState extends State<NimGame> {
               style: elevatedButtonStyle(), // Usando o estilo do botão
               onPressed: () {
                 setState(() {
-                  if(widget.jogada){
-                  if(!widget.isComp){
-                    widget.jogar(palitosParaRetirar);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                    snackBarStyle(
-                      '${widget.currentPlayer} retirou $palitosParaRetirar palito(s).'), // Estilo do Snackbar
-                  );
-                  }else{
-                    widget.jogarComp!();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      snackBarStyle(
-                        'Aguarde a jogada do computador'), // Estilo do Snackbar
+                  if (widget.jogada) {
+                    if (!widget.isComp) {
+                      widget.jogar(palitosParaRetirar);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        snackBarStyle(
+                            '${widget.currentPlayer} retirou $palitosParaRetirar palito(s).'), // Estilo do Snackbar
                       );
-                    } 
+                    } else {
+                      widget.jogarComp!();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        snackBarStyle(
+                            'Aguarde a jogada do computador'), // Estilo do Snackbar
+                      );
+                    }
                   }
                 });
-                
-                
               },
               child: const Text(
                 "Jogar",

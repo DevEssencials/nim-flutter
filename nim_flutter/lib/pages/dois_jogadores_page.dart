@@ -72,7 +72,14 @@ class _DoisJogadoresPageState extends State<DoisJogadoresPage> {
       context: context,
       builder: (_) => AlertDialog(
         title: const Text('Fim de Jogo'),
-        content: Text('Parabéns $nameWiner, você venceu!!!'),
+   content: Text(
+  (nameWiner == "Computador") 
+
+      ? "O computador venceu"
+      : "Parabéns $nameWiner, você venceu!!!" ,
+      
+      
+),
         actions: [
           TextButton(
             onPressed: () {
