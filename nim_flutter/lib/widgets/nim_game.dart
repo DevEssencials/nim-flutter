@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:nim_flutter/widgets/customer/customer_game_page.dart';
 import 'package:nim_flutter/widgets/customer/format_container.dart';
@@ -83,49 +85,67 @@ class _NimGameState extends State<NimGame> {
             const SizedBox(height: 20),
 
             // Dropdown para escolher quantos palitos retirar
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  "Escolha quantos palitos retirar:",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                DropdownButton<int>(
-                  value: palitosParaRetirar >= widget.qntJogo
-                      ? widget.qntJogo
-                      : palitosParaRetirar, // Ajusta para o valor máximo disponível
-                  items: List.generate(
-                    (widget.qntRetirar <= widget.qntJogo)
-                        ? widget.qntRetirar
-                        : widget.qntJogo, // Gera apenas opções válidas
-                    (index) => index + 1,
-                  )
-                      .map((value) => DropdownMenuItem<int>(
-                            value: value,
-                            child: Text(
-                              value.toString(),
-                              style: const TextStyle(fontSize: 18),
-                            ),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      // Atualiza palitosParaRetirar apenas se o valor for válido
-                      if (value != null  && widget.jogada) {
-                          palitosParaRetirar = value;
-                      }
-                      else{
-                        ScaffoldMessenger.of(context).showSnackBar(snackBarStyle("Não foi possivel Fazer jogada!"));
-                      }
-                    });
-                  },
-                  style: const TextStyle(
-                    color: Colors.black, // Texto preto no dropdown
-                  ),
-                  dropdownColor: Colors.white, // Fundo branco
-                ),
-              ],
+       Row(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    const Text(
+      "Escolha quantos palitos retirar:",
+      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    ),
+    DropdownButton<int>(
+  value: (palitosParaRetirar != null &&
+          palitosParaRetirar <= (widget.qntRetirar != null && widget.qntRetirar! <= widget.qntJogo 
+             ? widget.qntRetirar! 
+             : widget.qntJogo))
+             ? palitosParaRetirar
+             : null, // Verifica se o valor é válido, senão deixa null
+  items: List.generate(
+    (widget.qntRetirar != null && widget.qntRetirar! <= widget.qntJogo)
+        ? widget.qntRetirar!
+        : widget.qntJogo,
+    (index) {
+      print('Gerando item: ${index + 1}');
+      return index + 1;
+    },
+  )
+      .map((value) {
+        print('Mapeando valor: $value');
+        return DropdownMenuItem<int>(
+          value: value,
+          child: Text(
+            value.toString(),
+            style: const TextStyle(fontSize: 18),
+          ),
+        );
+      })
+      .toList(),
+  onChanged: (value) {
+    setState(() {
+      if (value != null && widget.jogada) {
+        palitosParaRetirar = value;
+        print('Novo valor selecionado: $palitosParaRetirar');
+      } else {
+        print('Jogada inválida');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              "Não foi possível fazer a jogada!",
+              style: const TextStyle(color: Colors.white),
             ),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    });
+  },
+  style: const TextStyle(
+    color: Colors.black,
+  ),
+  dropdownColor: Colors.white,
+)
+  ],
+),
+
 
             const SizedBox(height: 50),
 
