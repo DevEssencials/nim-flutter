@@ -28,6 +28,7 @@ SnackBar snackBarStyle(String message) {
   return SnackBar(
     content: Text(message),
     backgroundColor: primaryColor,
+    duration: const Duration(seconds: 1),
   );
 }
 

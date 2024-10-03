@@ -10,7 +10,6 @@ class NimGame extends StatefulWidget {
   final Function(int) jogar;
   final bool jogada;
 
-
   const NimGame({
     super.key,
     required this.jogada,
@@ -25,7 +24,13 @@ class NimGame extends StatefulWidget {
 }
 
 class _NimGameState extends State<NimGame> {
-  int palitosParaRetirar = 1;
+  int? palitosParaRetirar; // Make palitosParaRetirar nullable
+
+  @override
+  void initState() {
+    super.initState();
+    palitosParaRetirar = null; // Set initial value to null
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,88 +93,97 @@ class _NimGameState extends State<NimGame> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 DropdownButton<int>(
-                  // ignore: unnecessary_null_comparison
-                  value: (palitosParaRetirar != null &&
-                          // ignore: unnecessary_null_comparison
-                          palitosParaRetirar <=
-                              (widget.qntRetirar != null &&
-                                      widget.qntRetirar! <= widget.qntJogo
-                                  ? widget.qntRetirar!
-                                  : widget.qntJogo))
-                      ? palitosParaRetirar
-                      : null, // Verifica se o valor é válido, senão deixa null
+                  value: palitosParaRetirar, // Use the nullable value
                   items: List.generate(
-                    (widget.qntRetirar != null &&
-                            widget.qntRetirar! <= widget.qntJogo)
-                        ? widget.qntRetirar!
-                        : widget.qntJogo,
-                    (index) {
-                      print('Gerando item: ${index + 1}');
-                      return index + 1;
-                    },
-                  ).map((value) {
-                    print('Mapeando valor: $value');
-                    return DropdownMenuItem<int>(
-                      value: value,
-                      child: Text(
-                        value.toString(),
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                    );
-                  }).toList(),
+                    _getValidRetirarLimit(widget.qntRetirar, widget.qntJogo),
+                    (index) => index + 1,
+                  ).map((value) => DropdownMenuItem<int>(
+                    value: value,
+                    child: Text(
+                      value.toString(),
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                  )).toList(),
                   onChanged: (value) {
                     setState(() {
-                      if (value != null && widget.jogada && value <= widget.qntJogo) {
-                        palitosParaRetirar = value;
-                        print('Novo valor selecionado: $palitosParaRetirar');
-                      } else {
-                        print('Jogada inválida');
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              "Não foi possível fazer a jogada!",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            backgroundColor: Colors.red,
-                          ),
-                        );
-                      }
+                      palitosParaRetirar = value; // Update the value
+                      print('Novo valor selecionado: $palitosParaRetirar');
                     });
                   },
-                  style: const TextStyle(
-                    color: Colors.black,
-                  ),
+                  style: const TextStyle(color: Colors.black),
                   dropdownColor: Colors.white,
-                )
+                  hint: const Text("Selecione"), // Display a hint when value is null
+                  disabledHint: palitosParaRetirar == null
+                      ? const Text("Insira algum valor") // Show message when null
+                      : null,
+                ),
               ],
             ),
 
             const SizedBox(height: 50),
 
-            // Botão Jogar estilizado
-            ElevatedButton(
-              style: elevatedButtonStyle(), // Usando o estilo do botão
-              onPressed: () {
-                setState(() {
-                  if (widget.jogada) {
-                      widget.jogar(palitosParaRetirar);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        snackBarStyle(
-                            '${widget.currentPlayer} retirou $palitosParaRetirar palito(s).'),);// Estilo do Snackbar
-                  }
-                });
-              },
-              child: const Text(
-                "Jogar",
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              ),
+            // Botão Jogar estilizado (disabled if value is null)
+            elevatedButtonWithAction(
+              text: "Jogar",
+              onPressed: palitosParaRetirar != null
+                  ? () => _handleJogarButton() // Enable button if value is not null
+                  : null,
             ),
           ],
         ),
       ),
     );
   }
+
+  // Utility functions for cleaner code
+  int _getValidRetirarLimit(int? qntRetirar, int qntJogo) {
+    return qntRetirar != null && qntRetirar <= qntJogo ? qntRetirar : qntJogo;
+  }
+
+  // Function for handling the jogar button press
+ void _handleJogarButton() {
+  if (widget.jogada) {
+    widget.jogar(palitosParaRetirar!); // Passe o valor de palitosParaRetirar (certifique-se de que não seja nulo!)
+    setState(() {
+      palitosParaRetirar = null; // Zera o valor do DropdownButton após a jogada
+      // Atualize outros estados do jogo aqui, se necessário
+      // Por exemplo, você pode atualizar a quantidade de palitos restantes,
+      // mudar o jogador atual, etc.
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      snackBarStyle(
+        '${widget.currentPlayer} retirou $palitosParaRetirar palito(s).'),
+    );
+  }
 }
+ElevatedButton elevatedButtonWithAction({
+  required String text,
+  required VoidCallback? onPressed,
+}) {
+  return ElevatedButton(
+    onPressed: onPressed,
+    style: elevatedButtonStyle(),
+    child: Text(
+      text, 
+      style: const TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      ),
+    ),
+  );
+}
+Widget containerWithText({
+  required String text,
+  TextStyle? textStyle,
+}) {
+  return Container(
+    padding: EdgeInsets.all(16),
+    child: Text(
+      text,
+      style: textStyle,
+    ),
+  );
+}
+}
+

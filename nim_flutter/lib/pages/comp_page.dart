@@ -38,7 +38,7 @@ class _CompPageState extends State<CompPage> {
     palitosRestantes = widget.qntdPalitoJogo;
   }
 
-  //Jogar computador
+  //Jogar pessoa
   void fazerJogada(int jogada){
     setState(() {
       if(gameSinglePlayer.verificarJogada(jogada)){
@@ -56,12 +56,11 @@ class _CompPageState extends State<CompPage> {
         ispossible = false;
         ScaffoldMessenger.of(context).showSnackBar(
           snackBarStyle("Não foi possível fazer jogada! Verifique sua jogada e tente novamente"),
-          
         );
       }
     });
   }
-
+  //jogar computador
   void jogarComp() async{
     setState(() {
     // Mostra o SnackBar com a mensagem "Espere o computador fazer a jogada..." e um CircularProgressIndicator
@@ -95,10 +94,8 @@ class _CompPageState extends State<CompPage> {
         }else{
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Sua vez'),
-        duration:  Duration(seconds: 1),
-      ));
+        duration:  Duration(seconds: 1),));
         }
-      
     });
     
   }
