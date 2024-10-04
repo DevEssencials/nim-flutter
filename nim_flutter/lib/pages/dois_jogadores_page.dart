@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nim_flutter/models/jogo_class.dart';
 import 'package:nim_flutter/widgets/customer/customer_game_page.dart';
 import 'package:nim_flutter/widgets/nim_game.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DoisJogadoresPage extends StatefulWidget {
   final int qntdMaxRetirar;
@@ -31,13 +32,21 @@ class _DoisJogadoresPageState extends State<DoisJogadoresPage> {
   @override
   void initState() {
     super.initState();
-    game = JogoMultPlayer(
-      maxJogada: widget.qntdMaxRetirar,
-      quantidadeNoJogo: widget.qntdPalitoJogo,
-      namePlayer1: widget.player1,
-      namePlayer2: widget.player2,
-    );
-    palitosRestantes = widget.qntdPalitoJogo;
+    iniciarNovoJogo();//separando o init state do inicio do jogo pra poder reiniciar
+  }
+
+  void iniciarNovoJogo() {
+    setState(() {
+      game = JogoMultPlayer(
+        maxJogada: widget.qntdMaxRetirar,
+        quantidadeNoJogo: widget.qntdPalitoJogo,
+        namePlayer1: widget.player1,
+        namePlayer2: widget.player2,
+      );
+      palitosRestantes = widget.qntdPalitoJogo;
+      isPlayer1 = true;
+      ispossible = true;
+    });
   }
 
   void trocarJogador() {
@@ -46,39 +55,52 @@ class _DoisJogadoresPageState extends State<DoisJogadoresPage> {
     });
   }
 
+  Future<void> salvarVitoria(String playerName) async { //metodo pra salvar nome de quem venceu e registrar 1 ponto
+    final prefs = await SharedPreferences.getInstance();
+    int vitorias = prefs.getInt(playerName) ?? 0; // pegando da instancia 
+    await prefs.setInt(playerName, vitorias + 1); // salva o nome do jogador e pega 
+  }
+
   void retirarPalitos(int jogada) {
     setState(() {
-      if(game.verificarJogada(jogada)){
+      if (game.verificarJogada(jogada)) {
         game.fazerJogada(jogada);
         palitosRestantes -= jogada;
         if (game.isGameOver()) {
-          someoneWins(isPlayer1 ? widget.player2 : widget.player1);
+          someoneWins(isPlayer1 ? widget.player1 : widget.player2);
         } else {
           trocarJogador();
         }
-      }else{
+      } else {
         ispossible = false;
         ScaffoldMessenger.of(context).showSnackBar(
-          snackBarStyle("Não foi possível fazer jogada! Verifique sua jogada e tente novamente")
+          snackBarStyle("Não foi possível fazer jogada! Verifique sua jogada e tente novamente"),
         );
       }
     });
   }
 
-
-
   void someoneWins(String nameWiner) {
+    salvarVitoria(nameWiner); // salva o nome de quem ganhou 
+
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
         title: const Text('Fim de Jogo'),
-    content: Text("Parabéns $nameWiner, você venceu!!!" ,),
+        content: Text("Parabéns $nameWiner, você venceu!!!"),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.of(context).popUntil((route) => route.isFirst);
             },
             child: const Text("Voltar ao início"),
+          ),
+          TextButton( // reiniciar o jogo
+            onPressed: () {
+              Navigator.of(context).pop(); 
+              iniciarNovoJogo(); 
+            },
+            child: const Text("Reiniciar Jogo"),
           ),
         ],
       ),

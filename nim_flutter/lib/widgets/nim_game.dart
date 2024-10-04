@@ -67,9 +67,7 @@ class _NimGameState extends State<NimGame> {
                 ],
               ),
             ),
-
             const SizedBox(height: 50),
-
             // Quantidade de palitos restante
             SizedBox(
               height: 300,
@@ -81,9 +79,7 @@ class _NimGameState extends State<NimGame> {
                 shrinkWrap: true,
               ),
             ),
-
             const SizedBox(height: 20),
-
             // Dropdown para escolher quantos palitos retirar
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -119,9 +115,7 @@ class _NimGameState extends State<NimGame> {
                 ),
               ],
             ),
-
             const SizedBox(height: 50),
-
             // Botão Jogar estilizado (disabled if value is null)
             elevatedButtonWithAction(
               text: "Jogar",
