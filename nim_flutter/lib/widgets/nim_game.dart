@@ -137,16 +137,14 @@ class _NimGameState extends State<NimGame> {
   // Function for handling the jogar button press
  void _handleJogarButton() {
     widget.jogar(palitosParaRetirar!); // Passe o valor de palitosParaRetirar (certifique-se de que não seja nulo!)
-    setState(() {
-      palitosParaRetirar = null; // Zera o valor do DropdownButton após a jogada
-      // Atualize outros estados do jogo aqui, se necessário
-      // Por exemplo, você pode atualizar a quantidade de palitos restantes,
-      // mudar o jogador atual, etc.
-    });
+    
     ScaffoldMessenger.of(context).showSnackBar(
       snackBarStyle(
         '${widget.currentPlayer} retirou $palitosParaRetirar palito(s).'),
     );
+    setState(() {
+      palitosParaRetirar = null; 
+    });
 }
 ElevatedButton elevatedButtonWithAction({
   required String text,

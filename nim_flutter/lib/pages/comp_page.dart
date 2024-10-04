@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nim_flutter/models/jogo_class.dart';
 import 'package:nim_flutter/widgets/customer/customer_game_page.dart';
 import 'package:nim_flutter/widgets/nim_game.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CompPage extends StatefulWidget {
   final int qntdMaxRetirar;
@@ -88,6 +89,7 @@ class _CompPageState extends State<CompPage> {
     );
         if(gameSinglePlayer.isGameOver()){
           alguemVenceu(widget.nomeJogador);
+          salvarVitoria(widget.nomeJogador);//salvar a vitoria do jogador
         }else{
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Sua vez'),
@@ -97,9 +99,14 @@ class _CompPageState extends State<CompPage> {
     
   }
 
-  
+  Future<void> salvarVitoria(String playerName) async { //metodo pra salvar nome de quem venceu e registrar 1 ponto
+    final prefs = await SharedPreferences.getInstance();
+    int vitorias = prefs.getInt(playerName) ?? 0; // pegando da instancia 
+    await prefs.setInt(playerName, vitorias + 1); // salva o nome do jogador e pega 
+  }
 
   void alguemVenceu(String nameWiner) {
+
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
