@@ -27,7 +27,6 @@ class _DoisJogadoresPageState extends State<DoisJogadoresPage> {
   late JogoMultPlayer game;
   bool isPlayer1 = true;
   int palitosRestantes = 0;
-  bool ispossible = true;
 
   @override
   void initState() {
@@ -45,7 +44,6 @@ class _DoisJogadoresPageState extends State<DoisJogadoresPage> {
       );
       palitosRestantes = widget.qntdPalitoJogo;
       isPlayer1 = true;
-      ispossible = true;
     });
   }
 
@@ -72,7 +70,6 @@ class _DoisJogadoresPageState extends State<DoisJogadoresPage> {
           trocarJogador();
         }
       } else {
-        ispossible = false;
         ScaffoldMessenger.of(context).showSnackBar(
           snackBarStyle("Não foi possível fazer jogada! Verifique sua jogada e tente novamente"),
         );
@@ -112,7 +109,6 @@ class _DoisJogadoresPageState extends State<DoisJogadoresPage> {
     return Scaffold(
       backgroundColor: Colors.pink[100],
       body: NimGame(
-        jogada: ispossible,
         jogar: retirarPalitos,
         qntJogo: palitosRestantes,
         currentPlayer: isPlayer1 ? widget.player1 : widget.player2,

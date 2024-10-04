@@ -8,11 +8,11 @@ class NimGame extends StatefulWidget {
   final String currentPlayer;
   final int qntRetirar;
   final Function(int) jogar;
-  final bool jogada;
+  //final bool jogada;
 
   const NimGame({
     super.key,
-    required this.jogada,
+    //required this.jogada,
     required this.jogar,
     required this.qntJogo,
     required this.currentPlayer,
@@ -136,7 +136,6 @@ class _NimGameState extends State<NimGame> {
 
   // Function for handling the jogar button press
  void _handleJogarButton() {
-  if (widget.jogada) {
     widget.jogar(palitosParaRetirar!); // Passe o valor de palitosParaRetirar (certifique-se de que não seja nulo!)
     setState(() {
       palitosParaRetirar = null; // Zera o valor do DropdownButton após a jogada
@@ -148,7 +147,6 @@ class _NimGameState extends State<NimGame> {
       snackBarStyle(
         '${widget.currentPlayer} retirou $palitosParaRetirar palito(s).'),
     );
-  }
 }
 ElevatedButton elevatedButtonWithAction({
   required String text,

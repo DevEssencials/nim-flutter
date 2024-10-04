@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nim_flutter/pages/comp_page.dart';
 import 'package:nim_flutter/pages/dois_jogadores_page.dart';
+import 'package:nim_flutter/pages/ranking_page.dart';
 import 'package:nim_flutter/widgets/customer/alert_single_player_custom.dart';
 import 'package:nim_flutter/widgets/customer/dropdown_custom.dart';
 import 'package:nim_flutter/widgets/customer/input_decoration_custom.dart';
@@ -253,6 +254,21 @@ void inserirNomeJogadorUnico(BuildContext context) {
           "NIM GAME",
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         )),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: IconButton(
+              onPressed: (){
+                Navigator.push(
+                  context, 
+                  MaterialPageRoute(builder: (context) => const RankingPage()),
+                );
+              }, 
+              icon: const Icon(Icons.stacked_line_chart),
+              color: Colors.white,tooltip: "Ranking",
+            ),
+          ),
+        ],
         backgroundColor: const Color.fromARGB(255, 255, 35, 109),
         toolbarHeight: 110,
       ),
@@ -263,11 +279,13 @@ void inserirNomeJogadorUnico(BuildContext context) {
           child: Padding(
             padding: const EdgeInsets.all(50.0),
             child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              SizedBox(
-                child: Image.network(
-                    'https://th.bing.com/th/id/R.01ff082ff740417fd49b0516797922f2?rik=vns3F4pvTXMR8g&riu=http%3a%2f%2fimage.aladin.co.kr%2fCommunity%2fpaper%2f2013%2f0226%2fpimg_718842193830056.jpg&ehk=bbUhM2K6kJ48RlSU%2f%2bjFlUNZr4Mi4A42EhDvNoncE%2bs%3d&risl=&pid=ImgRaw&r=0'),
-              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center, 
+                children: [
+                  SizedBox(
+                    child: Image.network(
+                      'https://th.bing.com/th/id/R.01ff082ff740417fd49b0516797922f2?rik=vns3F4pvTXMR8g&riu=http%3a%2f%2fimage.aladin.co.kr%2fCommunity%2fpaper%2f2013%2f0226%2fpimg_718842193830056.jpg&ehk=bbUhM2K6kJ48RlSU%2f%2bjFlUNZr4Mi4A42EhDvNoncE%2bs%3d&risl=&pid=ImgRaw&r=0'),
+                  ),
               const SizedBox(
                 height: 15.0,
               ),
