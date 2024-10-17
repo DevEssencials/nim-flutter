@@ -35,4 +35,23 @@
 <body>
   <script src="flutter_bootstrap.js" async></script>
 </body>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyADfOEHDdN7TrxQZhWUwdE3BavEY8-KQUc",
+    authDomain: "nim-flutterfire.firebaseapp.com",
+    projectId: "nim-flutterfire",
+    storageBucket: "nim-flutterfire.appspot.com",
+    messagingSenderId: "403011738347",
+    appId: "1:403011738347:web:1654822d0412a70aae7cae"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+</script>
 </html>

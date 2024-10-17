@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nim_flutter/localData/service_local_data.dart';
+import 'package:nim_flutter/data/localData/service_local_data.dart';
 
 class RankingPage extends StatefulWidget {
   const RankingPage({super.key});

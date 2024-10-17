@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:nim_flutter/controller/controller_game.dart';
 import 'package:nim_flutter/models/jogo_class.dart';
+import 'package:nim_flutter/models/user_model.dart';
 import 'package:nim_flutter/widgets/customer/customer_game_page.dart';
 import 'package:nim_flutter/widgets/nim_game.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,6 +29,7 @@ class _DoisJogadoresPageState extends State<DoisJogadoresPage> {
   late JogoMultPlayer game;
   bool isPlayer1 = true;
   int palitosRestantes = 0;
+  final controller = ControllerGame();
 
   @override
   void initState() {
@@ -57,6 +60,8 @@ class _DoisJogadoresPageState extends State<DoisJogadoresPage> {
     final prefs = await SharedPreferences.getInstance();
     int vitorias = prefs.getInt(playerName) ?? 0; // pegando da instancia 
     await prefs.setInt(playerName, vitorias + 1); // salva o nome do jogador e pega 
+    final user = UserModel(nome: playerName, pontos: vitorias);
+    controller.chamarService(user);
   }
 
   void retirarPalitos(int jogada) {
