@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nim_flutter/controller/controller_game.dart';
 import 'package:nim_flutter/models/jogo_class.dart';
-import 'package:nim_flutter/models/user_model.dart';
 import 'package:nim_flutter/widgets/customer/customer_game_page.dart';
 import 'package:nim_flutter/widgets/nim_game.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -87,7 +86,7 @@ class _CompPageState extends State<CompPage> {
       ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Computador retirou $jComp palito(s).'),
-        duration: const Duration(seconds: 2),
+        duration: const Duration(seconds: 1),
       ),
     );
         if(gameSinglePlayer.isGameOver()){
@@ -95,8 +94,9 @@ class _CompPageState extends State<CompPage> {
           salvarVitoria(widget.nomeJogador);//salvar a vitoria do jogador
         }else{
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Sua vez'),
-        duration:  Duration(seconds: 1),));
+            content: Text('Sua vez'),
+            duration:  Duration(seconds: 1),
+          ));
         }
     });
     
@@ -105,26 +105,21 @@ class _CompPageState extends State<CompPage> {
   Future<void> salvarVitoria(String playerName) async { //metodo pra salvar nome de quem venceu e registrar 1 ponto
     final prefs = await SharedPreferences.getInstance();
     int vitorias = prefs.getInt(playerName) ?? 0; // pegando da instancia 
-    await prefs.setInt(playerName, vitorias + 1); // salva o nome do jogador e pega 
-    final user = UserModel(nome: playerName, pontos: vitorias);
-    controller.chamarService(user);
-    
+    vitorias ++;
+    await prefs.setInt(playerName, vitorias);
+    controller.syncRankingWithFirebase();
   }
 
   void alguemVenceu(String nameWiner) {
-
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
         title: const Text('Fim de Jogo'),
         content: Text(
-  (nameWiner == "Computador") 
-
-      ? "O computador venceu"
-      : "Parabéns $nameWiner, você venceu!!!" ,
-      
-      
-),
+          (nameWiner == "Computador") 
+            ? "O computador venceu"
+            : "Parabéns $nameWiner, você venceu!!!" ,
+        ),
         actions: [
           TextButton(
             onPressed: () {
@@ -136,6 +131,8 @@ class _CompPageState extends State<CompPage> {
       ),
     );
   }
+
+
   @override
   Widget build(BuildContext context) {
     return NimGame(

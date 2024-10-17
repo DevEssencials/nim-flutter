@@ -30,23 +30,26 @@ class  FirebaseService {
           });
         }
       }
-      
     } catch (e){
-      print(e);
+      print("Erro no método de alterar o ranking: $e");
     }
     
   }
   Future<void> isPlayerInRanking(UserModel user) async {
-    CollectionReference reference =  firestoreInstance.collection('ranking');
-    QuerySnapshot doc = await reference.get();
-    bool estaNoRanking = doc.docs.any((doc) => doc['nome'] == user.nome);
-    if(estaNoRanking){
-      var playerReference = doc.docs.firstWhere((doc) => doc['name'] == user.nome);
-      await playerReference.reference.update({'pontos': user.pontos});
-    }else {
-      alterarRanking(user);
+    try {
+      CollectionReference reference =  firestoreInstance.collection('ranking');
+      QuerySnapshot doc = await reference.get();
+      bool estaNoRanking = doc.docs.any((doc) => doc['nome'] == user.nome);
+      if(estaNoRanking){
+        var playerReference = doc.docs.firstWhere((doc) => doc['nome'] == user.nome);
+        await playerReference.reference.update({'pontos': user.pontos});
+      }else {
+        alterarRanking(user);
+      }
+    } catch (e) {
+      // TODO
+    print("erro no método de ver se está no ranking: $e");
     }
-    
   }
 }
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nim_flutter/controller/controller_game.dart';
 import 'package:nim_flutter/models/jogo_class.dart';
-import 'package:nim_flutter/models/user_model.dart';
 import 'package:nim_flutter/widgets/customer/customer_game_page.dart';
 import 'package:nim_flutter/widgets/nim_game.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,7 +26,7 @@ class DoisJogadoresPage extends StatefulWidget {
 
 class _DoisJogadoresPageState extends State<DoisJogadoresPage> {
   late JogoMultPlayer game;
-  bool isPlayer1 = true;
+  late bool isPlayer1;
   int palitosRestantes = 0;
   final controller = ControllerGame();
 
@@ -59,9 +58,9 @@ class _DoisJogadoresPageState extends State<DoisJogadoresPage> {
   Future<void> salvarVitoria(String playerName) async { //metodo pra salvar nome de quem venceu e registrar 1 ponto
     final prefs = await SharedPreferences.getInstance();
     int vitorias = prefs.getInt(playerName) ?? 0; // pegando da instancia 
-    await prefs.setInt(playerName, vitorias + 1); // salva o nome do jogador e pega 
-    final user = UserModel(nome: playerName, pontos: vitorias);
-    controller.chamarService(user);
+    vitorias ++;
+    await prefs.setInt(playerName, vitorias); // salva o nome do jogador e pega 
+    controller.syncRankingWithFirebase();
   }
 
   void retirarPalitos(int jogada) {
@@ -70,7 +69,7 @@ class _DoisJogadoresPageState extends State<DoisJogadoresPage> {
         game.fazerJogada(jogada);
         palitosRestantes -= jogada;
         if (game.isGameOver()) {
-          someoneWins(isPlayer1 ? widget.player1 : widget.player2);
+          someoneWins(isPlayer1 ? widget.player2 : widget.player1);
         } else {
           trocarJogador();
         }
@@ -84,7 +83,6 @@ class _DoisJogadoresPageState extends State<DoisJogadoresPage> {
 
   void someoneWins(String nameWiner) {
     salvarVitoria(nameWiner); // salva o nome de quem ganhou 
-
     showDialog(
       context: context,
       builder: (_) => AlertDialog(

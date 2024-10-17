@@ -38,7 +38,7 @@ class _RankingPageState extends State<RankingPage> {
               return ListTile(
                 leading: Text("#${index + 1}"), 
                 title: Text(jogador.key),       
-                trailing: Text("${jogador.value} vitórias"), 
+                trailing: Text((jogador.value>1) ? "${jogador.value} vitorias" : "${jogador.value} vitoria"), 
               );
             },
           );
