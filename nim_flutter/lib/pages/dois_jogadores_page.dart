@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nim_flutter/controller/controller_game.dart';
 import 'package:nim_flutter/models/jogo_class.dart';
+import 'package:nim_flutter/models/user_model.dart';
 import 'package:nim_flutter/widgets/customer/customer_game_page.dart';
 import 'package:nim_flutter/widgets/nim_game.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -60,7 +61,8 @@ class _DoisJogadoresPageState extends State<DoisJogadoresPage> {
     int vitorias = prefs.getInt(playerName) ?? 0; // pegando da instancia 
     vitorias ++;
     await prefs.setInt(playerName, vitorias); // salva o nome do jogador e pega 
-    controller.syncRankingWithFirebase();
+    UserModel jogador = UserModel(nome: playerName, pontos: vitorias);
+    controller.salvarVitoriaApi(jogador);
   }
 
   void retirarPalitos(int jogada) {

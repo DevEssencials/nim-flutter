@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:nim_flutter/data/localData/service_local_data.dart';
+import 'package:nim_flutter/data/http/http_service.dart';
+
 
 class RankingPage extends StatefulWidget {
-  const RankingPage({super.key});
+  const RankingPage({super.key,});
 
   @override
   State<RankingPage> createState() => _RankingPageState();
 }
 
 class _RankingPageState extends State<RankingPage> {
-  final ServiceLocalData service = ServiceLocalData();
+  final ClientHttp service = ClientHttp();
 
   @override
   Widget build(BuildContext context) {
@@ -17,17 +18,19 @@ class _RankingPageState extends State<RankingPage> {
       appBar: AppBar(
         title: const Text("Ranking de Jogadores"),
       ),
-      body: FutureBuilder<List<MapEntry<String, int>>>(
-        future: service.getRanking(), 
+      body: FutureBuilder(
+        future: service.getScore(), 
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator()); 
           } else if (snapshot.hasError) {
             return const Center(child: Text("Erro ao carregar o ranking")); 
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text("Nenhum jogador registrado")); 
+            
+            return const Center(child: Text("Nenhum jogador registrado"));
+            
           }
-
+          
           final ranking = snapshot.data!;
 
           return ListView.builder(
@@ -37,8 +40,8 @@ class _RankingPageState extends State<RankingPage> {
 
               return ListTile(
                 leading: Text("#${index + 1}"), 
-                title: Text(jogador.key),       
-                trailing: Text((jogador.value>1) ? "${jogador.value} vitorias" : "${jogador.value} vitoria"), 
+                title: Text(jogador.nome),       
+                trailing: Text((jogador.pontos!>1) ? "${jogador.pontos} vitorias" : "${jogador.pontos} vitoria"), 
               );
             },
           );
@@ -46,4 +49,6 @@ class _RankingPageState extends State<RankingPage> {
       ),
     );
   }
+  
 }
+

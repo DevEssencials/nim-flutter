@@ -25,6 +25,8 @@ class _HomePageState extends State<HomePage> with Validator {
   final _formKey = GlobalKey<FormState>();
   String? dropdownValue = "none";
 
+
+
   final List<DropdownMenuItem<String>> _mods = [
     const DropdownMenuItem(
       value: 'none',
@@ -258,11 +260,11 @@ void inserirNomeJogadorUnico(BuildContext context) {
           Padding(
             padding: const EdgeInsets.only(right: 12),
             child: IconButton(
-              onPressed: (){
+              onPressed: () {
                 Navigator.push(
                   context, 
                   MaterialPageRoute(builder: (context) => const RankingPage()),
-                );
+                ); 
               }, 
               icon: const Icon(Icons.stacked_line_chart),
               color: Colors.white,tooltip: "Ranking",
@@ -411,4 +413,5 @@ void inserirNomeJogadorUnico(BuildContext context) {
       ),
     );
   }
+  
 }
