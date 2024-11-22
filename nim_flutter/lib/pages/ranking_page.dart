@@ -19,19 +19,20 @@ class _RankingPageState extends State<RankingPage> {
         title: const Text("Ranking de Jogadores"),
       ),
       body: FutureBuilder(
-        future: service.getScore(), 
+        future: service.getScore(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator()); 
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return const Center(child: Text("Erro ao carregar o ranking")); 
+            return const Center(child: Text("Erro ao carregar o ranking"));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            
             return const Center(child: Text("Nenhum jogador registrado"));
-            
           }
-          
+
           final ranking = snapshot.data!;
+
+          // Ordena os jogadores por pontos em ordem decrescente.
+          ranking.sort((a, b) => b.pontos!.compareTo(a.pontos!));
 
           return ListView.builder(
             itemCount: ranking.length,
@@ -39,9 +40,13 @@ class _RankingPageState extends State<RankingPage> {
               final jogador = ranking[index];
 
               return ListTile(
-                leading: Text("#${index + 1}"), 
-                title: Text(jogador.nome),       
-                trailing: Text((jogador.pontos!>1) ? "${jogador.pontos} vitorias" : "${jogador.pontos} vitoria"), 
+                leading: Text("#${index + 1}"),
+                title: Text(jogador.nome),
+                trailing: Text(
+                  jogador.pontos! > 1
+                      ? "${jogador.pontos} vitórias"
+                      : "${jogador.pontos} vitória",
+                ),
               );
             },
           );
@@ -49,6 +54,5 @@ class _RankingPageState extends State<RankingPage> {
       ),
     );
   }
-  
 }
 
